@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portofolio - Zidane</title>
+
+  <!-- Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Spline Viewer -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.71/build/spline-viewer.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --panel:#111114;
+      --muted:#bfbfc3;
+      --text:#f5f6f7;
+      --accent:#d4af37;         /* Gold accent */
+      --accent-2:#00ffc6;       /* Neon mint for subtle details */
+      --card:#141418;
+      --border:#1f1f25;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+      --radius-sm:12px;
+      --radius-lg:22px;
+      --grad: radial-gradient(1200px 800px at 80% -10%, rgba(212,175,55,.12), transparent 55%),
+              radial-gradient(900px 600px at -10% 110%, rgba(0,255,198,.08), transparent 50%);
+    }
+    *{ box-sizing:border-box; }
+    html, body{
+      margin:0;
+      padding:0;
+      font-family:"Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+
+    /* Layout */
+    .container{
+      width:min(1200px, 92%);
+      margin-inline:auto;
+    }
+    section{
+      padding: 88px 0;
+      position: relative;
+    }
+    .section-head{
+      display:flex; align-items:baseline; justify-content:space-between; gap:24px;
+      margin-bottom: 36px;
+    }
+    .title{
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 700;
+      letter-spacing:.3px;
+      display:flex; align-items:center; gap:14px;
+    }
+    .title .bar{
+      display:inline-block; width:46px; height:10px; border-radius:6px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      box-shadow: 0 0 24px rgba(212,175,55,.45);
+    }
+    .muted{ color:var(--muted); }
+
+    /* Hero */
+    .hero{
+      padding-top: 48px;
+      background:
+        radial-gradient(1600px 800px at 110% -10%, rgba(212,175,55,.15), transparent 55%),
+        radial-gradient(1000px 600px at -10% 110%, rgba(0,255,198,.09), transparent 50%);
+      overflow: clip;
+    }
+    .hero-inner{
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .headline{
+      display:flex; flex-direction:column; gap:18px;
+    }
+    .name{
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing:.6px;
+      background: linear-gradient(180deg, #fff, #d9d9dc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 6px 26px rgba(0,0,0,.35);
+    }
+    .sub{
+      font-size: clamp(16px, 2.2vw, 22px);
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap; margin-top:6px;
+    }
+    .btn{
+      padding: 12px 18px;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #15151a, #0e0e12);
+      color: var(--text);
+      display:inline-flex; align-items:center; gap:10px;
+      font-weight:600;
+      transition: all .2s ease;
+      box-shadow: var(--shadow);
+    }
+    .btn:hover{ transform: translateY(-2px); }
+    .btn.primary{
+      border:1px solid rgba(212,175,55,.55);
+      background: linear-gradient(180deg, rgba(212,175,55,.16), rgba(212,175,55,.06));
+      box-shadow: 0 10px 40px rgba(212,175,55,.22), inset 0 0 0 1px rgba(212,175,55,.25);
+    }
+    .btn.ghost{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, #121219, #0b0b10);
+    }
+
+    .profile-card{
+      display:flex; align-items:center; gap:16px;
+      padding: 14px; border:1px solid var(--border);
+      background: linear-gradient(180deg, #131318, #0f0f13);
+      border-radius: 14px; width:max-content;
+      backdrop-filter: blur(6px);
+    }
+    .avatar{
+      width:56px; height:56px; border-radius: 50%;
+      background: linear-gradient(135deg, #1d1d24, #121217);
+      border:1px solid var(--border);
+      position:relative; overflow:hidden;
+    }
+    .avatar::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(120deg, rgba(212,175,55,.35), transparent 60%),
+        radial-gradient(180px 120px at 70% 20%, rgba(0,255,198,.22), transparent 60%);
+      mix-blend:screen;
+    }
+    .who{
+      display:flex; flex-direction:column; line-height:1.2;
+    }
+    .who .n{ font-weight:700; }
+    .who .r{ font-size:12px; color:var(--muted); }
+
+    .spline-wrap{
+      width:100%; height: 520px; min-height: 380px;
+      border-radius: var(--radius-lg);
+      overflow:hidden; border: 1px solid var(--border);
+      background: #0f0f13;
+      box-shadow: var(--shadow);
+      position:relative;
+    }
+    .spline-wrap gradient{
+      pointer-events:none;
+    }
+    spline-viewer{
+      width:100%; height:100%;
+      display:block;
+    }
+
+    /* About */
+    .about-grid{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:24px;
+    }
+    .card{
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .about-list{
+      display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px;
+    }
+    .about-item{
+      padding:14px; border:1px dashed rgba(255,255,255,.08);
+      border-radius: 12px; background: linear-gradient(180deg, #121218, #101014);
+    }
+    .about-item .k{ font-size:12px; color:var(--muted); }
+    .about-item .v{ font-weight:600; }
+
+    /* Skills */
+    .skills{
+      display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px;
+    }
+    .skill{
+      padding:16px; border-radius: 12px; border:1px solid var(--border);
+      background: linear-gradient(180deg, #14141b, #101017);
+    }
+    .skill-head{ display:flex; justify-content:space-between; margin-bottom:8px; }
+    .skill-name{ font-weight:600; }
+    .skill-val{ color:var(--muted); font-size:13px; }
+    .bar{
+      width:100%; height:10px; border-radius:999px; background:#1c1c22; overflow:hidden; border:1px solid #202029;
+    }
+    .bar > span{
+      display:block; height:100%;
+      background: linear-gradient(90deg, var(--accent), #ffe27a);
+      box-shadow: 0 0 22px rgba(212,175,55,.45);
+      border-right: 2px solid rgba(255,255,255,.35);
+    }
+
+    /* Portfolio */
+    .grid{
+      display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px;
+    }
+    .project{
+      border:1px solid var(--border); border-radius: 14px; overflow:hidden; background:#101015; display:flex; flex-direction:column;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .project:hover{ transform: translateY(-4px); border-color: rgba(212,175,55,.4); }
+    .thumb{
+      width:100%; aspect-ratio: 16/9; object-fit: cover;
+      background:#0e0e12;
+    }
+    .p-body{ padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .p-title{ font-weight:600; }
+    .p-desc{ color:var(--muted); font-size: 14px; }
+    .p-link{
+      margin-top:auto; display:inline-flex; align-items:center; gap:8px; color:var(--accent);
+      font-weight:600;
+    }
+
+    /* Services */
+    .services{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px; }
+    .svc{
+      border:1px solid var(--border); border-radius: 14px; padding:20px; background: linear-gradient(180deg, #14141a, #0f0f15);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .svc:hover{ transform: translateY(-4px); border-color: rgba(212,175,55,.4); }
+    .svc h4{ margin:0 0 6px 0; }
+    .svc p{ margin:0; color:var(--muted); }
+
+    /* Contact */
+    .contact{
+      display:grid; grid-template-columns: 1fr 1fr; gap:16px;
+    }
+    .form{
+      display:grid; gap:12px;
+    }
+    .input{
+      width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:12px; background:#0f0f14; color:var(--text);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    .input:focus{
+      outline:none; border-color: rgba(212,175,55,.5);
+      box-shadow: 0 0 0 4px rgba(212,175,55,.1);
+    }
+    textarea.input{ min-height:140px; resize:vertical; }
+    .socials{
+      display:flex; gap:12px; flex-wrap:wrap;
+    }
+    .social-btn{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 14px;
+      border:1px solid var(--border); border-radius:12px; background: #0f0f14;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .social-btn:hover{ transform: translateY(-3px); border-color: rgba(212,175,55,.5); }
+    .icon{
+      width:18px; height:18px; display:inline-block;
+    }
+
+    /* Footer */
+    footer{
+      padding: 28px 0; border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, #0b0b0e, #0a0a0c);
+    }
+    .foot{
+      display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap: wrap;
+      color:var(--muted);
+      font-size: 14px;
+    }
+
+    /* Animations */
+    .reveal{ opacity:0; transform: translateY(14px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.show{ opacity:1; transform: translateY(0); }
+    .fade-in{ animation: fadeIn .7s ease both; }
+    .slide-up{ animation: slideUp .7s .05s ease both; }
+    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+    @keyframes slideUp{ from{opacity:0; transform: translateY(12px)} to{opacity:1; transform: translateY(0)} }
+
+    /* Responsive */
+    @media (max-width: 1024px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .spline-wrap{ height: 440px; }
+      .about-grid{ grid-template-columns: 1fr; }
+      .skills{ grid-template-columns: 1fr; }
+      .services{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .contact{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px){
+      .services, .grid{ grid-template-columns: 1fr; }
+      .spline-wrap{ height: 360px; }
+      .title{ font-size: 24px; }
+    }
+
+    /* Header / Nav (simple sticky) */
+    .nav{
+      position: sticky; top:0; z-index: 20;
+      background: rgba(10,10,12,.8);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding: 12px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px; font-weight:700;
+    }
+    .brand-dot{
+      width:12px; height:12px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #ffe9a3, var(--accent));
+      box-shadow: 0 0 18px rgba(212,175,55,.8);
+    }
+    .nav-links{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .chip{
+      padding:8px 12px; border:1px solid var(--border); border-radius:999px; color:var(--muted);
+      transition: all .2s ease;
+      font-size: 14px;
+    }
+    .chip:hover{ color:var(--text); border-color: rgba(212,175,55,.5); transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>Muhammad Zidane Alfadhil Ghani</span>
+      </div>
+      <div class="nav-links">
+        <a class="chip" href="#hero">Home</a>
+        <a class="chip" href="#about">About</a>
+        <a class="chip" href="#skills">Skills</a>
+        <a class="chip" href="#portfolio">Portfolio</a>
+        <a class="chip" href="#services">Services</a>
+        <a class="chip" href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header id="hero" class="hero">
+    <div class="container hero-inner">
+      <div class="headline">
+        <div class="profile-card fade-in">
+          <div class="avatar" aria-hidden="true"></div>
+          <div class="who">
+            <span class="n">Muhammad Zidane</span>
+            <span class="r">Web Developer</span>
+          </div>
+        </div>
+
+        <h1 class="name slide-up">Muhammad Zidane</h1>
+        <p class="sub reveal">Web Developer | UI/UX | Freelancer</p>
+
+        <div class="cta reveal">
+          <a href="#contact" class="btn primary">
+            <span>Hire Me</span>
+          </a>
+          <a href="#" class="btn ghost" download>
+            <span>Download CV</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="spline-wrap reveal">
+        <spline-viewer url="https://prod.spline.design/VJLoxp84lCdVfdZu/scene.splinecode"></spline-viewer>
+      </div>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title"><span class="bar"></span> About Me</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="card reveal">
+          <p style="margin-top:0; color: var(--muted); font-size: 16px;">
+            Saya adalah seorang pengembang web yang fokus pada pembuatan produk digital modern, bersih, dan mudah digunakan.
+            Saya menyukai kolaborasi lintas disiplin antara desain dan engineering untuk menghadirkan pengalaman pengguna yang berkesan.
+          </p>
+          <p style="color: var(--muted);">
+            Saya percaya pada prinsip desain yang sederhana, tipografi yang kuat, serta performa dan aksesibilitas sebagai prioritas utama.
+          </p>
+        </div>
+        <div class="card reveal">
+          <div class="about-list">
+            <div class="about-item">
+              <div class="k">Umur</div>
+              <div class="v">16</div>
+            </div>
+            <div class="about-item">
+              <div class="k">Lokasi</div>
+              <div class="v">Palembang, Indonesia</div>
+            </div>
+            <div class="about-item">
+              <div class="k">Role</div>
+              <div class="v">Web Developer</div>
+            </div>
+            <div class="about-item">
+              <div class="k">Pengalaman</div>
+              <div class="v">3+ Tahun</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title"><span class="bar"></span> Skills</h2>
+      </div>
+
+      <div class="skills">
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">HTML</span>
+            <span class="skill-val">95%</span>
+          </div>
+          <div class="bar"><span style="width:95%"></span></div>
+        </div>
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">CSS</span>
+            <span class="skill-val">90%</span>
+          </div>
+          <div class="bar"><span style="width:90%"></span></div>
+        </div>
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">JavaScript</span>
+            <span class="skill-val">85%</span>
+          </div>
+          <div class="bar"><span style="width:85%"></span></div>
+        </div>
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">React</span>
+            <span class="skill-val">80%</span>
+          </div>
+          <div class="bar"><span style="width:80%"></span></div>
+        </div>
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">UI/UX</span>
+            <span class="skill-val">82%</span>
+          </div>
+          <div class="bar"><span style="width:82%"></span></div>
+        </div>
+        <div class="skill reveal">
+          <div class="skill-head">
+            <span class="skill-name">Prototyping</span>
+            <span class="skill-val">78%</span>
+          </div>
+          <div class="bar"><span style="width:78%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title"><span class="bar"></span> Portfolio</h2>
+      </div>
+
+      <div class="grid">
+        <!-- Project 1 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1529101091764-c3526daf38fe?q=80&w=1600&auto=format&fit=crop" alt="Project 1" />
+          <div class="p-body">
+            <div class="p-title">Dashboard Analytics</div>
+            <p class="p-desc">Dashboard interaktif untuk memantau metrik bisnis secara real-time.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+        <!-- Project 2 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1600&auto=format&fit=crop" alt="Project 2" />
+          <div class="p-body">
+            <div class="p-title">Landing Page SaaS</div>
+            <p class="p-desc">Halaman pemasaran modern dengan fokus konversi dan performa.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+        <!-- Project 3 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop" alt="Project 3" />
+          <div class="p-body">
+            <div class="p-title">E-Commerce UI</div>
+            <p class="p-desc">Desain antarmuka e-commerce yang clean dengan UX yang intuitif.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+        <!-- Project 4 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop" alt="Project 4" />
+          <div class="p-body">
+            <div class="p-title">Design System</div>
+            <p class="p-desc">Sistem desain komponen dengan panduan konsistensi visual.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+        <!-- Project 5 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop" alt="Project 5" />
+          <div class="p-body">
+            <div class="p-title">Portfolio Creative</div>
+            <p class="p-desc">Situs portofolio interaktif dengan animasi yang halus.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+        <!-- Project 6 -->
+        <article class="project reveal">
+          <img class="thumb" src="https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1600&auto=format&fit=crop" alt="Project 6" />
+          <div class="p-body">
+            <div class="p-title">Mobile App UI</div>
+            <p class="p-desc">Konsep UI aplikasi mobile dengan fokus tipografi dan kontras.</p>
+            <a class="p-link" href="#" target="_blank" rel="noopener">Lihat Proyek →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title"><span class="bar"></span> Services</h2>
+      </div>
+
+      <div class="services">
+        <div class="svc reveal">
+          <h4>Web Development</h4>
+          <p>Pembuatan website cepat, responsif, dan SEO-friendly.</p>
+        </div>
+        <div class="svc reveal">
+          <h4>UI/UX Design</h4>
+          <p>Desain antarmuka dan pengalaman pengguna yang fungsional.</p>
+        </div>
+        <div class="svc reveal">
+          <h4>Branding</h4>
+          <p>Identitas merek yang konsisten dan berkarakter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="title"><span class="bar"></span> Contact</h2>
+      </div>
+
+      <div class="contact">
+        <div class="card reveal">
+          <form class="form" id="contactForm">
+            <input class="input" type="text" name="name" placeholder="Nama" required />
+            <input class="input" type="email" name="email" placeholder="Email" required />
+            <textarea class="input" name="message" placeholder="Pesan" required></textarea>
+            <button type="submit" class="btn primary" style="width:max-content">Kirim Pesan</button>
+          </form>
+        </div>
+
+        <div class="card reveal">
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div class="muted">Terhubung dengan saya:</div>
+            <div class="socials">
+              <a class="social-btn" href="https://www.instagram.com/zidane_alfdl/" target="_blank" rel="noopener">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z" stroke="currentColor"/><path d="M16.5 7.5h.01" stroke="currentColor"/><circle cx="12" cy="12" r="4" stroke="currentColor"/></svg>
+                Instagram
+              </a>
+              <a class="social-btn" href="https://github.com" target="_blank" rel="noopener">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.51 2.87 8.33 6.84 9.68.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.1-1.49-1.1-1.49-.9-.63.07-.62.07-.62 1 .07 1.53 1.04 1.53 1.04.89 1.58 2.34 1.12 2.91.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.74-.1-.26-.45-1.3.1-2.7 0 0 .84-.27 2.75 1.04A9.2 9.2 0 0 1 12 6.84c.85 0 1.7.12 2.5.36 1.9-1.31 2.74-1.04 2.74-1.04.56 1.4.21 2.44.11 2.7.64.71 1.03 1.62 1.03 2.74 0 3.94-2.34 4.8-4.57 5.06.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.04 10.04 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" stroke="currentColor"/></svg>
+                GitHub
+              </a>
+              <a class="social-btn" href="https://linkedin.com" target="_blank" rel="noopener">
+                <svg class="icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor"/><path d="M7 10v7" stroke="currentColor"/><circle cx="7" cy="7" r="1" fill="currentColor"/><path d="M12 17v-4.5c0-1 1-2 2.5-2S17 11 17 12.5V17" stroke="currentColor"/></svg>
+                LinkedIn
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container foot">
+      <div>© <span id="year"></span> Muhammad Zidane. Semua hak cipta dilindungi.</div>
+      <div style="display:flex; gap:10px;">
+        <a class="chip" href="#hero">Kembali ke atas ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      })
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Contact form handler (no backend) — opens mailto as fallback
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      const subject = encodeURIComponent(`Contact from ${name}`);
+      const body = encodeURIComponent(`Nama: ${name}\nEmail: ${email}\n\nPesan:\n${message}`);
+      window.location.href = `mailto:youremail@example.com?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
